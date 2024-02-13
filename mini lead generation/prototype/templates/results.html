@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraped Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 800px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th,
+        table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Scraped Results</h1>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Company</th>
+                    <th>Industry</th>
+                    <th>Location</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, row in data.iterrows() %}
+                <tr>
+                    <td>{{ row['Company'] }}</td>
+                    <td>{{ row['Industry'] }}</td>
+                    <td>{{ row['Location'] }}</td>
+                    <td><a href="{{ row['Link'] }}" target="_blank">{{ row['Link'] }}</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form action="/save" method="POST">
+            <input type="hidden" name="data" value="{{ data.to_html() }}">
+            <div class="form-group">
+                <label for="format">Choose Format:</label>
+                <select class="form-control" id="format" name="format">
+                    <option value="csv">CSV</option>
+                    <option value="xlsx">Excel</option>
+                    <option value="by_industry">Separate by Industry</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-lg btn-block btn-custom">Save Data</button>
+        </form>
+    </div>
+</body>
+</html>
